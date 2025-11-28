@@ -69,7 +69,11 @@ const ExperienceSection = () => {
   ];
 
   return (
-    <section id="experience" className="py-20 bg-black/10">
+    <section 
+      id="experience" 
+      className="py-20 relative"
+      style={{ backgroundColor: '#fff' }}
+    >
       <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
@@ -78,10 +82,10 @@ const ExperienceSection = () => {
           transition={{ duration: 0.8 }}
           className="max-w-6xl mx-auto text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-teal-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
             Professional Journey
           </h2>
-          <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg leading-relaxed max-w-3xl mx-auto" style={{ color: '#121b2f' }}>
             My professional journey in software development, working with amazing teams 
             and building impactful solutions that drive business growth.
           </p>
@@ -98,39 +102,63 @@ const ExperienceSection = () => {
             >
               {/* Timeline Connector */}
               {index < experiences.length - 1 && (
-                <div className="absolute left-8 top-24 w-px h-16 bg-gradient-to-b from-emerald-400 to-transparent"></div>
+                <div 
+                  className="absolute left-8 top-24 w-px h-16"
+                  style={{
+                    background: 'linear-gradient(to bottom, #121b2f, transparent)',
+                  }}
+                ></div>
               )}
               
               <div className="flex items-start gap-6">
                 {/* Timeline Dot */}
                 <motion.div
-                  className="relative z-10 flex-shrink-0 w-16 h-16 bg-gradient-to-r from-emerald-600 to-teal-600 rounded-full flex items-center justify-center shadow-lg"
-                  whileHover={{ scale: 1.1 }}
+                  className="relative z-10 flex-shrink-0 w-16 h-16 rounded-full flex items-center justify-center shadow-lg"
+                  style={{
+                    background: '#121b2f',
+                  }}
+                  whileHover={{ scale: 1.1, rotate: 5 }}
                   transition={{ duration: 0.3 }}
                 >
-                  {exp.icon}
+                  <div style={{ color: '#121b2f' }}>
+                    {exp.icon}
+                  </div>
                 </motion.div>
 
                 {/* Content Card */}
                 <motion.div
-                  className="flex-1 bg-white/10 backdrop-blur-lg rounded-xl p-8 hover:bg-white/20 transition-all duration-300 border border-white/10 hover:border-emerald-400/30"
-                  whileHover={{ y: -5 }}
+                  className="flex-1 backdrop-blur-lg rounded-xl p-8 transition-all duration-300 border"
+                  style={{
+                    backgroundColor: '#fafafa',
+                    borderColor: 'rgba(18, 27, 47, 0.2)',
+                  }}
+                  whileHover={{ 
+                    y: -5,
+                    borderColor: 'rgba(18, 27, 47, 0.4)',
+                    backgroundColor: '#fafafa',
+                  }}
                 >
                   {/* Header */}
                   <div className="mb-6">
                     <div className="flex items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-semibold text-white">
+                      <h3 className="text-2xl font-semibold" style={{ color: '#121b2f' }}>
                         {exp.title}
                       </h3>
-                      <span className="bg-emerald-500/20 text-emerald-300 px-3 py-1 rounded-full text-sm font-medium">
+                      <span 
+                        className="px-3 py-1 rounded-full text-sm font-medium"
+                        style={{
+                          backgroundColor: 'rgba(18, 27, 47, 0.1)',
+                          color: '#121b2f',
+                        }}
+                      >
                         {exp.duration}
                       </span>
                     </div>
-                    <div className="flex items-center text-emerald-400 mb-2">
+                    <div className="flex items-center mb-2" style={{ color: '#121b2f' }}>
                       <Building className="w-4 h-4 mr-2" />
                       <span className="font-medium">{exp.company}</span>
                     </div>
-                    <div className="flex items-center text-gray-300 text-sm gap-4">
+                    <div className="flex items-center text-sm gap-4" style={{ color: '#121b2f' }}>
                       <div className="flex items-center">
                         <MapPin className="w-4 h-4 mr-2" />
                         <span>{exp.location}</span>
@@ -144,7 +172,7 @@ const ExperienceSection = () => {
                   
                   {/* Description */}
                   <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-white mb-4">Key Achievements</h4>
+                    <h4 className="text-lg font-semibold mb-4" style={{ color: '#121b2f' }}>Key Achievements</h4>
                     <ul className="space-y-3">
                       {exp.description.map((item, i) => (
                         <motion.li
@@ -152,9 +180,10 @@ const ExperienceSection = () => {
                           initial={{ opacity: 0, x: -20 }}
                           animate={inView ? { opacity: 1, x: 0 } : {}}
                           transition={{ duration: 0.5, delay: index * 0.2 + i * 0.1 }}
-                          className="flex items-start text-gray-300"
+                          className="flex items-start"
+                          style={{ color: '#121b2f' }}
                         >
-                          <span className="text-emerald-400 mr-3 mt-1">•</span>
+                          <span className="mr-3 mt-1" style={{ color: '#121b2f' }}>•</span>
                           <span className="leading-relaxed">{item}</span>
                         </motion.li>
                       ))}
@@ -163,7 +192,7 @@ const ExperienceSection = () => {
                   
                   {/* Technologies */}
                   <div>
-                    <h4 className="text-lg font-semibold text-white mb-3">Technologies Used</h4>
+                    <h4 className="text-lg font-semibold mb-3" style={{ color: '#121b2f' }}>Technologies Used</h4>
                     <div className="flex flex-wrap gap-2">
                       {exp.technologies.map((tech, i) => (
                         <motion.span
@@ -171,7 +200,16 @@ const ExperienceSection = () => {
                           initial={{ opacity: 0, scale: 0.8 }}
                           animate={inView ? { opacity: 1, scale: 1 } : {}}
                           transition={{ duration: 0.3, delay: index * 0.2 + i * 0.05 }}
-                          className="bg-emerald-600/20 text-emerald-300 px-3 py-1 rounded-full text-sm border border-emerald-500/30 hover:bg-emerald-600/30 transition-colors"
+                          className="px-3 py-1 rounded-full text-sm border transition-colors"
+                          style={{
+                            backgroundColor: 'rgba(18, 27, 47, 0.08)',
+                            color: '#121b2f',
+                            borderColor: 'rgba(18, 27, 47, 0.15)',
+                          }}
+                          whileHover={{
+                            backgroundColor: 'rgba(18, 27, 47, 0.12)',
+                            scale: 1.05,
+                          }}
                         >
                           {tech}
                         </motion.span>
@@ -191,26 +229,32 @@ const ExperienceSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-20 text-center"
         >
-          <div className="bg-gradient-to-r from-emerald-600/20 to-teal-600/20 backdrop-blur-lg rounded-xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div 
+            className="backdrop-blur-lg rounded-xl p-8 max-w-4xl mx-auto border"
+            style={{
+              background: 'rgba(18, 27, 47, 0.03)',
+              borderColor: 'rgba(18, 27, 47, 0.15)',
+            }}
+          >
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#121b2f' }}>
               Proven Track Record of Success
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="mb-6" style={{ color: '#121b2f' }}>
               From leading development teams to co-founding a technology company, my experience 
               demonstrates consistent delivery of high-impact solutions that drive business growth.
             </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="text-center">
-                <div className="text-3xl font-bold text-emerald-400 mb-2">5+</div>
-                <div className="text-gray-300">Years Experience</div>
+                <div className="text-3xl font-bold mb-2" style={{ color: '#121b2f' }}>5+</div>
+                <div style={{ color: '#121b2f' }}>Years Experience</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-teal-400 mb-2">10x</div>
-                <div className="text-gray-300">Revenue Impact</div>
+                <div className="text-3xl font-bold mb-2" style={{ color: '#121b2f' }}>10x</div>
+                <div style={{ color: '#121b2f' }}>Revenue Impact</div>
               </div>
               <div className="text-center">
-                <div className="text-3xl font-bold text-blue-400 mb-2">85%</div>
-                <div className="text-gray-300">Efficiency Gain</div>
+                <div className="text-3xl font-bold mb-2" style={{ color: '#121b2f' }}>85%</div>
+                <div style={{ color: '#121b2f' }}>Efficiency Gain</div>
               </div>
             </div>
           </div>

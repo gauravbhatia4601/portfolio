@@ -68,25 +68,57 @@ const SkillsSection = () => {
 
   const getLevelColor = (level: string) => {
     switch (level) {
-      case 'Expert': return 'text-emerald-400 bg-emerald-400/20 border-emerald-400/30';
-      case 'Advanced': return 'text-blue-400 bg-blue-400/20 border-blue-400/30';
-      case 'Intermediate': return 'text-purple-400 bg-purple-400/20 border-purple-400/30';
-      default: return 'text-gray-400 bg-gray-400/20 border-gray-400/30';
+      case 'Expert': 
+        return {
+          color: '#121b2f',
+          bg: 'rgba(18, 27, 47, 0.1)',
+          border: 'rgba(255, 255, 255, 0.4)',
+        };
+      case 'Advanced': 
+        return {
+          color: '#121b2f',
+          bg: 'rgba(18, 27, 47, 0.08)',
+          border: 'rgba(18, 27, 47, 0.15)',
+        };
+      case 'Intermediate': 
+        return {
+          color: '#121b2f',
+          bg: 'rgba(255, 255, 255, 0.1)',
+          border: 'rgba(18, 27, 47, 0.12)',
+        };
+      default: 
+        return {
+          color: '#121b2f',
+          bg: 'rgba(18, 27, 47, 0.08)',
+          border: 'rgba(18, 27, 47, 0.15)',
+        };
     }
   };
 
   const getCategoryColor = (color: string) => {
-    switch (color) {
-      case 'emerald': return 'from-emerald-500/20 to-emerald-600/20 border-emerald-500/30';
-      case 'purple': return 'from-purple-500/20 to-purple-600/20 border-purple-500/30';
-      case 'blue': return 'from-blue-500/20 to-blue-600/20 border-blue-500/30';
-      case 'orange': return 'from-orange-500/20 to-orange-600/20 border-orange-500/30';
-      default: return 'from-emerald-500/20 to-emerald-600/20 border-emerald-500/30';
-    }
+    // All categories use the same coral accent with varying opacity for visual distinction
+    const opacityMap: { [key: string]: { bg: number, border: number } } = {
+      'emerald': { bg: 0.18, border: 0.35 },
+      'purple': { bg: 0.15, border: 0.3 },
+      'blue': { bg: 0.12, border: 0.25 },
+      'orange': { bg: 0.2, border: 0.4 },
+    };
+    
+    const opacities = opacityMap[color] || { bg: 0.15, border: 0.3 };
+    
+    return {
+      bg: `rgba(255, 255, 255, ${opacities.bg})`,
+      border: `rgba(255, 255, 255, ${opacities.border})`,
+      icon: '#121b2f',
+    };
   };
 
   return (
-    <section id="skills" className="py-20 bg-black/10">
+    <section 
+      id="skills" 
+      className="py-20 relative"
+      style={{ backgroundColor: '#fff' }}
+    >
       <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
@@ -95,10 +127,10 @@ const SkillsSection = () => {
           transition={{ duration: 0.8 }}
           className="max-w-6xl mx-auto text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-teal-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
             Skills & Expertise
           </h2>
-          <p className="text-lg text-gray-300 leading-relaxed max-w-3xl mx-auto">
+          <p className="text-lg leading-relaxed max-w-3xl mx-auto" style={{ color: '#121b2f' }}>
             A comprehensive showcase of my technical expertise and professional capabilities 
             across different technologies and domains.
           </p>
@@ -111,13 +143,22 @@ const SkillsSection = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: categoryIndex * 0.1 }}
-              className={`bg-gradient-to-r ${getCategoryColor(category.color)} backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300 border`}
+              className="backdrop-blur-lg rounded-xl p-6 transition-all duration-300 border"
+              style={{
+                backgroundColor: getCategoryColor(category.color).bg,
+                borderColor: getCategoryColor(category.color).border,
+              }}
+              whileHover={{
+                y: -5,
+                borderColor: getCategoryColor(category.color).icon,
+                backgroundColor: '#fafafa',
+              }}
             >
               <div className="flex items-center justify-center mb-6">
-                <div className="text-emerald-400 mr-3">
+                <div className="mr-3" style={{ color: getCategoryColor(category.color).icon }}>
                   {category.icon}
                 </div>
-                <h3 className="text-2xl font-semibold text-white">
+                <h3 className="text-2xl font-semibold" style={{ color: '#121b2f' }}>
                   {category.title}
                 </h3>
               </div>
@@ -129,23 +170,37 @@ const SkillsSection = () => {
                     initial={{ opacity: 0, scale: 0.8 }}
                     animate={inView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 0.5, delay: categoryIndex * 0.1 + skillIndex * 0.05 }}
-                    className="bg-white/10 backdrop-blur-sm rounded-lg p-4 hover:bg-white/20 transition-all duration-300 border border-white/10 hover:border-emerald-400/30 group"
-                    whileHover={{ y: -2 }}
+                    className="backdrop-blur-sm rounded-lg p-4 transition-all duration-300 border group"
+                    style={{
+                      backgroundColor: '#fff',
+                      borderColor: 'rgba(18, 27, 47, 0.1)',
+                    }}
+                    whileHover={{ 
+                      y: -2,
+                      borderColor: getCategoryColor(category.color).icon,
+                      backgroundColor: '#fff',
+                    }}
                   >
                     <div className="flex items-center justify-between mb-2">
                       <div className="flex items-center">
-                        <div className="text-emerald-400 mr-2 group-hover:scale-110 transition-transform">
+                        <div 
+                          className="mr-2 group-hover:scale-110 transition-transform"
+                          style={{ color: getCategoryColor(category.color).icon }}
+                        >
                           {skill.icon}
                         </div>
-                        <span className="text-white font-medium text-sm">{skill.name}</span>
+                        <span className="font-medium text-sm" style={{ color: '#121b2f' }}>{skill.name}</span>
                       </div>
                     </div>
                     
                     <div className="flex items-center justify-between">
-                      <span className={`text-xs px-2 py-1 rounded-full border ${getLevelColor(skill.level)}`}>
+                      <span 
+                        className="text-xs px-2 py-1 rounded-full border"
+                        style={getLevelColor(skill.level)}
+                      >
                         {skill.level}
                       </span>
-                      <span className="text-gray-400 text-xs">
+                      <span className="text-xs" style={{ color: '#121b2f' }}>
                         {skill.experience}
                       </span>
                     </div>
@@ -162,31 +217,44 @@ const SkillsSection = () => {
           transition={{ duration: 0.8, delay: 0.6 }}
           className="mt-16 text-center"
         >
-          <div className="bg-gradient-to-r from-emerald-600/20 to-teal-600/20 backdrop-blur-lg rounded-xl p-8 max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div 
+            className="backdrop-blur-lg rounded-xl p-8 max-w-4xl mx-auto border"
+            style={{
+              background: 'rgba(255, 255, 255, 0.12)',
+              borderColor: 'rgba(18, 27, 47, 0.15)',
+            }}
+          >
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#121b2f' }}>
               Continuous Growth & Innovation
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="mb-6" style={{ color: '#121b2f' }}>
               Technology evolves rapidly, and I'm committed to continuous learning and staying ahead of the curve. 
               I actively explore emerging technologies to deliver cutting-edge solutions.
             </p>
-            <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
                 { name: "AI/ML", icon: <Brain className="w-6 h-6" /> },
-                { name: "Web3", icon: <Globe className="w-6 h-6" /> },
                 { name: "Microservices", icon: <GitBranch className="w-6 h-6" /> },
                 { name: "Cloud Architecture", icon: <Cloud className="w-6 h-6" /> },
                 { name: "Design Systems", icon: <Code className="w-6 h-6" /> }
               ].map((tech, index) => (
                 <motion.div
                   key={index}
-                  className="flex flex-col items-center p-3 bg-white/10 rounded-lg hover:bg-white/20 transition-all duration-300"
-                  whileHover={{ scale: 1.05 }}
+                  className="flex flex-col items-center p-3 rounded-lg transition-all duration-300 border"
+                  style={{
+                    backgroundColor: '#fff',
+                    borderColor: 'rgba(18, 27, 47, 0.1)',
+                  }}
+                  whileHover={{ 
+                    scale: 1.05,
+                    borderColor: 'rgba(255, 255, 255, 0.4)',
+                    backgroundColor: '#fff',
+                  }}
                 >
-                  <div className="text-emerald-400 mb-2">
+                  <div className="mb-2" style={{ color: '#121b2f' }}>
                     {tech.icon}
                   </div>
-                  <span className="text-gray-300 text-sm text-center">{tech.name}</span>
+                  <span className="text-sm text-center" style={{ color: '#121b2f' }}>{tech.name}</span>
                 </motion.div>
               ))}
             </div>

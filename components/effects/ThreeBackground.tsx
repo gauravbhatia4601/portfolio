@@ -2,78 +2,91 @@
 
 import React, { useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Points, PointMaterial } from '@react-three/drei';
 import * as THREE from 'three';
 
-function ParticleField() {
-  const ref = useRef<THREE.Points>(null!);
-  
-  const particles = useMemo(() => {
-    const temp = [];
-    for (let i = 0; i < 2000; i++) {
-      const x = (Math.random() - 0.5) * 20;
-      const y = (Math.random() - 0.5) * 20;
-      const z = (Math.random() - 0.5) * 20;
-      temp.push(x, y, z);
-    }
-    return new Float32Array(temp);
-  }, []);
-
-  useFrame((state) => {
-    if (ref.current) {
-      ref.current.rotation.x = state.clock.elapsedTime * 0.05;
-      ref.current.rotation.y = state.clock.elapsedTime * 0.02;
-    }
-  });
-
-  return (
-    <Points ref={ref} positions={particles} stride={3} frustumCulled={false}>
-      <PointMaterial
-        transparent
-        color="#14b8a6"
-        size={0.02}
-        sizeAttenuation={true}
-        depthWrite={false}
-      />
-    </Points>
-  );
-}
-
-function FloatingGeometry() {
+function BubbleSphere({ 
+  position, 
+  radius, 
+  speed 
+}: { 
+  position: [number, number, number], 
+  radius: number, 
+  speed: number 
+}) {
   const meshRef = useRef<THREE.Mesh>(null!);
   
   useFrame((state) => {
     if (meshRef.current) {
-      meshRef.current.position.y = Math.sin(state.clock.elapsedTime * 0.5) * 0.5;
-      meshRef.current.rotation.x = state.clock.elapsedTime * 0.2;
-      meshRef.current.rotation.z = state.clock.elapsedTime * 0.1;
+      // Very gentle floating motion
+      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime * speed) * 0.2;
+      meshRef.current.rotation.x = state.clock.elapsedTime * (speed * 0.2);
+      meshRef.current.rotation.y = state.clock.elapsedTime * (speed * 0.3);
     }
   });
 
   return (
-    <mesh ref={meshRef} position={[3, 0, -5]}>
-      <octahedronGeometry args={[0.8, 0]} />
+    <mesh ref={meshRef} position={position}>
+      <sphereGeometry args={[radius, 12, 12]} />
       <meshStandardMaterial
-        color="#10b981"
+        color="#121b2f"
         transparent
-        opacity={0.3}
-        wireframe
+        opacity={0.012}
+        roughness={0.4}
+        metalness={0.1}
       />
     </mesh>
   );
 }
 
 const ThreeBackground = () => {
+  const bubbles = useMemo(() => {
+    // Reduced from 10 to 6 bubbles for better performance
+    return Array.from({ length: 6 }, (_, i) => ({
+      position: [
+        (Math.random() - 0.5) * 40,
+        (Math.random() - 0.5) * 40,
+        (Math.random() - 0.5) * 30 - 15
+      ] as [number, number, number],
+      radius: Math.random() * 2 + 1.5,
+      speed: Math.random() * 0.3 + 0.15,
+    }));
+  }, []);
+
   return (
-    <div className="fixed inset-0 -z-10">
+    <div 
+      className="fixed inset-0 pointer-events-none"
+      style={{ 
+        zIndex: -1,
+        overflow: 'hidden',
+      }}
+    >
       <Canvas
         camera={{ position: [0, 0, 10], fov: 75 }}
-        style={{ background: 'transparent' }}
+        style={{ 
+          background: 'transparent',
+          width: '100%',
+          height: '100%',
+        }}
+        gl={{ 
+          alpha: true, 
+          antialias: false, 
+          powerPreference: "low-power",
+          stencil: false,
+          depth: false,
+        }}
+        dpr={[1, 1.5]}
+        performance={{ min: 0.5 }}
       >
-        <ambientLight intensity={0.5} />
-        <pointLight position={[10, 10, 10]} />
-        <ParticleField />
-        <FloatingGeometry />
+        <ambientLight intensity={0.3} />
+        <pointLight position={[10, 10, 10]} intensity={0.4} />
+        {bubbles.map((bubble, index) => (
+          <BubbleSphere
+            key={index}
+            position={bubble.position}
+            radius={bubble.radius}
+            speed={bubble.speed}
+          />
+        ))}
       </Canvas>
     </div>
   );

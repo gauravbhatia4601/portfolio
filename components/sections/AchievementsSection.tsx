@@ -51,26 +51,31 @@ const AchievementsSection = () => {
   ];
 
   const getCategoryColor = (category: string) => {
-    switch (category) {
-      case 'Security':
-        return 'from-red-600/20 to-orange-600/20';
-      case 'Development':
-        return 'from-blue-600/20 to-cyan-600/20';
-      case 'Business Impact':
-        return 'from-green-600/20 to-emerald-600/20';
-      case 'Performance':
-        return 'from-purple-600/20 to-pink-600/20';
-      case 'Leadership':
-        return 'from-yellow-600/20 to-orange-600/20';
-      case 'Entrepreneurship':
-        return 'from-teal-600/20 to-cyan-600/20';
-      default:
-        return 'from-emerald-600/20 to-teal-600/20';
-    }
+    // All categories use coral with varying opacity for visual distinction
+    const opacityMap: { [key: string]: { bg: number, border: number } } = {
+      'Security': { bg: 0.2, border: 0.4 },
+      'Development': { bg: 0.15, border: 0.3 },
+      'Business Impact': { bg: 0.18, border: 0.35 },
+      'Performance': { bg: 0.12, border: 0.25 },
+      'Leadership': { bg: 0.16, border: 0.32 },
+      'Entrepreneurship': { bg: 0.14, border: 0.28 },
+    };
+    
+    const opacities = opacityMap[category] || { bg: 0.15, border: 0.3 };
+    
+    return {
+      bg: `rgba(255, 255, 255, ${opacities.bg})`,
+      border: `rgba(255, 255, 255, ${opacities.border})`,
+      icon: '#121b2f',
+    };
   };
 
   return (
-    <section id="achievements" className="py-20 bg-black/10">
+    <section 
+      id="achievements" 
+      className="py-20 relative"
+      style={{ backgroundColor: '#fff' }}
+    >
       <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
@@ -79,10 +84,10 @@ const AchievementsSection = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-teal-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
             Achievements & Certifications
           </h2>
-          <p className="text-lg text-gray-300 leading-relaxed">
+          <p className="text-lg leading-relaxed" style={{ color: '#121b2f' }}>
             Recognized accomplishments and certifications that demonstrate my expertise 
             and commitment to excellence in technology and business.
           </p>
@@ -95,19 +100,30 @@ const AchievementsSection = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className={`bg-gradient-to-r ${getCategoryColor(achievement.category)} backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300 border border-white/10`}
+              className="backdrop-blur-lg rounded-xl p-6 transition-all duration-300 border"
+              style={{
+                backgroundColor: getCategoryColor(achievement.category).bg,
+                borderColor: getCategoryColor(achievement.category).border,
+              }}
               whileHover={{ scale: 1.05, y: -5 }}
             >
-              <div className="text-teal-400 mb-4 flex items-center justify-between">
+              <div className="mb-4 flex items-center justify-between" style={{ color: getCategoryColor(achievement.category).icon }}>
                 {achievement.icon}
-                <span className="text-xs bg-white/20 px-2 py-1 rounded-full text-white">
+                <span 
+                  className="text-xs px-2 py-1 rounded-full border"
+                  style={{
+                    backgroundColor: '#fafafa',
+                    borderColor: getCategoryColor(achievement.category).border,
+                    color: '#121b2f',
+                  }}
+                >
                   {achievement.category}
                 </span>
               </div>
-              <h3 className="text-xl font-semibold text-white mb-3">
+              <h3 className="text-xl font-semibold mb-3" style={{ color: '#121b2f' }}>
                 {achievement.title}
               </h3>
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: '#121b2f' }}>
                 {achievement.description}
               </p>
             </motion.div>
@@ -120,25 +136,6 @@ const AchievementsSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-16 text-center"
         >
-          <div className="bg-gradient-to-r from-emerald-600/20 to-teal-600/20 backdrop-blur-lg rounded-xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
-              Continuous Growth & Learning
-            </h3>
-            <p className="text-gray-300 mb-6">
-              I believe in continuous improvement and staying ahead of technology trends. 
-              These achievements reflect my commitment to excellence and innovation in every project.
-            </p>
-            <div className="flex flex-wrap justify-center gap-3">
-              {["Security", "Performance", "Leadership", "Innovation", "Excellence"].map((value, index) => (
-                <span
-                  key={index}
-                  className="bg-emerald-600/30 text-emerald-300 px-4 py-2 rounded-full text-sm"
-                >
-                  {value}
-                </span>
-              ))}
-            </div>
-          </div>
         </motion.div>
       </div>
     </section>

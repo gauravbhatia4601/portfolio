@@ -52,8 +52,12 @@ const Navigation = () => {
   return (
     <motion.nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-black/90 backdrop-blur-lg' : 'bg-transparent'
+        scrolled ? 'backdrop-blur-lg' : 'bg-transparent'
       }`}
+      style={{
+        backgroundColor: scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent',
+        borderBottom: scrolled ? `1px solid rgba(18, 27, 47, 0.1)` : 'none',
+      }}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.8 }}
@@ -66,18 +70,30 @@ const Navigation = () => {
               <motion.button
                 key={item.name}
                 onClick={() => scrollToSection(item.href)}
-                className={`transition-all duration-300 relative ${
-                  activeSection === item.id 
-                    ? 'text-emerald-400 font-semibold' 
-                    : 'text-white hover:text-emerald-400'
-                }`}
+                className="transition-all duration-300 relative font-medium"
+                style={{
+                  color: activeSection === item.id 
+                    ? '#121b2f' 
+                    : '#121b2f',
+                }}
+                onMouseEnter={(e) => {
+                  if (activeSection !== item.id) {
+                    e.currentTarget.style.color = '#121b2f';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (activeSection !== item.id) {
+                    e.currentTarget.style.color = '#121b2f';
+                  }
+                }}
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
               >
                 {item.name}
                 {activeSection === item.id && (
                   <motion.div
-                    className="absolute -bottom-1 left-0 right-0 h-0.5 bg-emerald-400"
+                    className="absolute -bottom-1 left-0 right-0 h-0.5"
+                    style={{ backgroundColor: '#fff' }}
                     layoutId="activeSection"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -90,7 +106,8 @@ const Navigation = () => {
 
           {/* Mobile Menu Button - Positioned absolutely */}
           <button
-            className="md:hidden absolute right-0 text-white"
+            className="md:hidden absolute right-0"
+            style={{ color: '#121b2f' }}
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -110,11 +127,22 @@ const Navigation = () => {
                 <motion.button
                   key={item.name}
                   onClick={() => scrollToSection(item.href)}
-                  className={`block w-full text-left py-2 transition-colors duration-300 ${
-                    activeSection === item.id 
-                      ? 'text-emerald-400 font-semibold' 
-                      : 'text-white hover:text-emerald-400'
-                  }`}
+                  className="block w-full text-left py-2 transition-colors duration-300 font-medium"
+                  style={{
+                    color: activeSection === item.id 
+                      ? '#121b2f' 
+                      : '#121b2f',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (activeSection !== item.id) {
+                      e.currentTarget.style.color = '#121b2f';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (activeSection !== item.id) {
+                      e.currentTarget.style.color = '#121b2f';
+                    }
+                  }}
                   whileHover={{ x: 10 }}
                 >
                   {item.name}

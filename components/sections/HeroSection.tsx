@@ -40,26 +40,63 @@ const HeroSection = () => {
   return (
     <section
       id="home"
-      className="min-h-screen flex items-center justify-center relative overflow-hidden bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900"
+      className="min-h-screen flex items-center justify-center relative overflow-hidden"
+      style={{ backgroundColor: '#fff' }}
     >
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-emerald-500/10 via-teal-500/10 to-blue-500/10 animate-pulse"></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(16,185,129,0.1),transparent_50%)]"></div>
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full blur-3xl opacity-5"
+          style={{ backgroundColor: '#fff' }}
+          animate={{
+            scale: [1, 1.3, 1],
+            x: [0, 60, 0],
+            y: [0, -40, 0],
+          }}
+          transition={{
+            duration: 8,
+            repeat: Infinity,
+            ease: "easeInOut"
+          }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 rounded-full blur-3xl opacity-4"
+          style={{ backgroundColor: '#fff' }}
+          animate={{
+            scale: [1, 1.4, 1],
+            x: [0, -50, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{
+            duration: 10,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1
+          }}
+        />
       </div>
 
       {/* Floating Tech Icons */}
       {floatingIcons.map((item, index) => (
         <motion.div
           key={index}
-          className={`absolute ${item.position} text-emerald-400/30`}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
+          className={`absolute ${item.position}`}
+          style={{ color: `rgba(18, 27, 47, 0.4)` }}
+          initial={{ opacity: 0, y: 20, scale: 0.8 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1, delay: item.delay }}
         >
           <motion.div
-            animate={{ y: [0, -10, 0] }}
-            transition={{ duration: 3, repeat: Infinity, delay: item.delay }}
+            animate={{ 
+              y: [0, -15, 0],
+              rotate: [0, 5, -5, 0],
+            }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              delay: item.delay,
+              ease: "easeInOut"
+            }}
           >
             {item.icon}
           </motion.div>
@@ -91,10 +128,23 @@ const HeroSection = () => {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="mb-6"
           >
-            <span className="text-2xl md:text-3xl text-gray-300 font-light">Hi, I'm</span>
-            <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-emerald-400 via-teal-300 to-blue-400 bg-clip-text text-transparent mt-2 mb-4">
+            <motion.span 
+              className="text-2xl md:text-3xl font-light"
+              style={{ color: '#121b2f' }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.4 }}
+            >
+              Hi, I'm
+            </motion.span>
+            <motion.h1 
+              className="text-5xl md:text-7xl font-bold gradient-text mt-2 mb-4"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.5, type: "spring", stiffness: 100 }}
+            >
               Gaurav Bhatia
-            </h1>
+            </motion.h1>
           </motion.div>
 
           {/* Animated Role Display */}
@@ -107,11 +157,12 @@ const HeroSection = () => {
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentRole}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
-                className="text-2xl md:text-3xl font-semibold text-white"
+                initial={{ opacity: 0, y: 20, scale: 0.95 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -20, scale: 0.95 }}
+                transition={{ duration: 0.5, type: "spring" }}
+                className="text-2xl md:text-3xl font-semibold"
+                style={{ color: '#121b2f' }}
               >
                 {roles[currentRole]}
               </motion.div>
@@ -120,13 +171,20 @@ const HeroSection = () => {
           
           {/* Tagline */}
           <motion.p
-            className="text-xl md:text-2xl text-gray-300 mb-8 leading-relaxed max-w-3xl mx-auto"
+            className="text-xl md:text-2xl mb-8 leading-relaxed max-w-3xl mx-auto"
+            style={{ color: '#121b2f' }}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            Crafting <span className="text-emerald-400 font-semibold">scalable backend systems</span> and 
-            <span className="text-teal-400 font-semibold"> AI-powered solutions</span> that drive business growth
+            Crafting <span 
+              className="font-semibold"
+              style={{ color: '#121b2f' }}
+            >scalable backend systems</span> and 
+            <span 
+              className="font-semibold"
+                  style={{ color: '#121b2f' }}
+            > AI-powered solutions</span> that drive business growth
           </motion.p>
 
           {/* Key Highlights */}
@@ -136,24 +194,31 @@ const HeroSection = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
-            <motion.div
-              className="bg-emerald-500/20 border border-emerald-500/30 rounded-full px-4 py-2 text-sm text-emerald-300 backdrop-blur-sm"
-              whileHover={{ scale: 1.05 }}
-            >
-              5+ Years Experience
-            </motion.div>
-            <motion.div
-              className="bg-teal-500/20 border border-teal-500/30 rounded-full px-4 py-2 text-sm text-teal-300 backdrop-blur-sm"
-              whileHover={{ scale: 1.05 }}
-            >
-              14 GitHub Repos
-            </motion.div>
-            <motion.div
-              className="bg-blue-500/20 border border-blue-500/30 rounded-full px-4 py-2 text-sm text-blue-300 backdrop-blur-sm"
-              whileHover={{ scale: 1.05 }}
-            >
-              10x Revenue Impact
-            </motion.div>
+            {[
+              { text: "5+ Years Experience" },
+              { text: "10x Revenue Impact" },
+            ].map((badge, idx) => (
+              <motion.div
+                key={idx}
+                className="rounded-full px-4 py-2 text-sm backdrop-blur-sm border"
+                style={{
+                  backgroundColor: 'rgba(18, 27, 47, 0.05)',
+                  borderColor: 'rgba(18, 27, 47, 0.2)',
+                  color: '#121b2f',
+                }}
+                whileHover={{ 
+                  scale: 1.05, 
+                  y: -2,
+                  backgroundColor: 'rgba(18, 27, 47, 0.1)',
+                  boxShadow: '0 4px 20px rgba(18, 27, 47, 0.1)',
+                }}
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.7 + idx * 0.1 }}
+              >
+                {badge.text}
+              </motion.div>
+            ))}
           </motion.div>
           
           {/* CTA Buttons */}
@@ -165,8 +230,8 @@ const HeroSection = () => {
           >
             <motion.button
               onClick={scrollToAbout}
-              className="group bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
+              className="group btn-primary flex items-center gap-2 px-8 py-4 rounded-full font-semibold"
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <span>Explore My Work</span>
@@ -175,8 +240,12 @@ const HeroSection = () => {
             
             <motion.a
               href="#contact"
-              className="group border-2 border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 flex items-center gap-2"
-              whileHover={{ scale: 1.05 }}
+              className="group btn-secondary flex items-center gap-2 px-8 py-4 rounded-full font-semibold"
+              style={{
+                borderColor: '#121b2f',
+                color: '#121b2f',
+              }}
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               <span>Start a Project</span>
@@ -201,13 +270,24 @@ const HeroSection = () => {
                 href={social.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group text-gray-400 hover:text-emerald-400 transition-colors duration-300 relative"
-                whileHover={{ scale: 1.2 }}
+                className="group transition-colors duration-300 relative"
+                style={{ 
+                  color: '#121b2f',
+                }}
+                whileHover={{ 
+                  scale: 1.2, 
+                  rotate: 5,
+                  color: '#121b2f',
+                }}
               >
                 <div className="relative">
                   {social.icon}
                   <motion.div
-                    className="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="absolute -top-8 left-1/2 transform -translate-x-1/2 text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{
+                      backgroundColor: '#121b2f',
+                      color: '#121b2f',
+                    }}
                     initial={{ opacity: 0 }}
                     whileHover={{ opacity: 1 }}
                   >
@@ -229,11 +309,23 @@ const HeroSection = () => {
           >
             <button
               onClick={scrollToAbout}
-              className="text-white hover:text-emerald-400 transition-colors duration-300 group"
+              className="transition-colors duration-300 group"
+              style={{ color: '#121b2f' }}
             >
               <div className="flex flex-col items-center gap-2">
-                <span className="text-xs text-gray-400 group-hover:text-emerald-400 transition-colors">Scroll to explore</span>
-                <ChevronDown size={24} />
+                <motion.span 
+                  className="text-xs transition-colors"
+                  style={{ color: '#121b2f' }}
+                  whileHover={{ color: '#121b2f' }}
+                >
+                  Scroll to explore
+                </motion.span>
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                >
+                  <ChevronDown size={24} />
+                </motion.div>
               </div>
             </button>
           </motion.div>

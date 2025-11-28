@@ -3,17 +3,26 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
+  /* Two-Color Palette: #121b2f + #fff - LIGHT THEME */
+  --bg-primary: 255 255 255;      /* #fff - White */
+  --bg-secondary: 255 255 255;    /* White */
+  --bg-tertiary: 250 250 250;     /* Very light gray for cards */
+  
+  --accent: 18 27 47;             /* #121b2f - Dark navy - the accent */
+  --accent-light: 18 27 47;       /* Dark navy */
+  --accent-dark: 18 27 47;        /* Dark navy */
+  --accent-glow: 18 27 47;        /* Dark navy */
+  
+  --text-primary: 18 27 47;       /* #121b2f - Dark navy */
+  --text-secondary: 18 27 47;     /* Dark navy */
+  --text-tertiary: 60 70 85;      /* Slightly lighter for secondary text */
+  
+  --border-primary: 220 220 220;  /* Light gray borders */
+  --border-accent: 18 27 47;      /* Dark navy borders */
+  
+  --foreground-rgb: 18, 27, 47;
+  --background-start-rgb: 255, 255, 255;
   --background-end-rgb: 255, 255, 255;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
 }
 
 @layer base {
@@ -76,18 +85,28 @@
   * {
     @apply border-border;
   }
-  body {
-    @apply bg-background text-foreground;
-    background-image: 
-      radial-gradient(circle at 1px 1px, rgba(20, 184, 166, 0.15) 1px, transparent 0),
-      radial-gradient(circle at 3px 3px, rgba(16, 185, 129, 0.1) 1px, transparent 0),
-      radial-gradient(circle at 5px 5px, rgba(5, 150, 105, 0.08) 1px, transparent 0);
-    background-size: 20px 20px, 40px 40px, 60px 60px;
-    background-position: 0 0, 10px 10px, 20px 20px;
-    position: relative;
+  
+  :root {
+    --font-sans: var(--font-outfit);
+    --font-heading: var(--font-sora);
   }
   
-  /* Add noise overlay */
+  body {
+    @apply bg-background text-foreground;
+    font-family: var(--font-outfit), system-ui, sans-serif;
+    background: #fff;
+    background-attachment: fixed;
+    position: relative;
+    min-height: 100vh;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-sora), system-ui, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Subtle grid overlay */
   body::before {
     content: '';
     position: fixed;
@@ -95,40 +114,68 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.25'/%3E%3C/svg%3E");
+    background-image: 
+      repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 4px,
+        rgba(18, 27, 47, 0.02) 4px,
+        rgba(18, 27, 47, 0.02) 8px
+      ),
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 4px,
+        rgba(18, 27, 47, 0.02) 4px,
+        rgba(18, 27, 47, 0.02) 8px
+      );
     pointer-events: none;
-    z-index: -1;
+    z-index: 0;
+  }
+  
+  /* Subtle noise texture */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    mix-blend-mode: overlay;
   }
 }
 
-/* Custom scrollbar with emerald/teal theme */
+/* Custom scrollbar - dark accent */
 ::-webkit-scrollbar {
-  width: 12px;
+  width: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(15, 23, 42, 0.8);
-  border-radius: 6px;
+  background: #fff;
+  border-radius: 0;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #14b8a6, #10b981);
-  border-radius: 6px;
-  border: 2px solid rgba(15, 23, 42, 0.8);
+  background: #121b2f;
+  border-radius: 0;
+  border: 1px solid #fff;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #0d9488, #059669);
+  background: rgba(18, 27, 47, 0.9);
 }
 
 ::-webkit-scrollbar-corner {
-  background: rgba(15, 23, 42, 0.8);
+  background: #fff;
 }
 
 /* Firefox scrollbar */
 html {
   scrollbar-width: thin;
-  scrollbar-color: #14b8a6 rgba(15, 23, 42, 0.8);
+  scrollbar-color: #121b2f #fff;
 }
 
 /* Smooth scrolling for all browsers */
@@ -146,12 +193,10 @@ html {
   animation: float 3s ease-in-out infinite;
 }
 
-/* Custom gradient text */
+/* Custom gradient text - dark navy */
 .gradient-text {
-  background: linear-gradient(135deg, #14b8a6, #10b981);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: #121b2f;
+  text-shadow: 0 2px 10px rgba(18, 27, 47, 0.1);
 }
 
 /* Backdrop blur fallback */
@@ -162,8 +207,8 @@ html {
 
 /* Selection styling */
 ::selection {
-  background: rgba(20, 184, 166, 0.3);
-  color: white;
+  background: rgba(18, 27, 47, 0.2);
+  color: #121b2f;
 }
 
 /* Focus styles */
@@ -185,16 +230,8 @@ html {
 }
 
 /* Animated gradient background */
-@keyframes gradient {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
-}
-
 .animate-gradient {
-  background: linear-gradient(-45deg, #1e1b4b, #134e4a, #0f766e, #1e1b4b);
-  background-size: 400% 400%;
-  animation: gradient 15s ease infinite;
+  background: rgb(var(--bg-primary));
 }
 
 /* Particle animation */
@@ -227,13 +264,31 @@ html {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Custom button styles */
+/* Custom button styles - dark navy */
 .btn-primary {
-  @apply bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl;
+  background: #121b2f;
+  color: #fff;
+  @apply font-semibold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl;
+  box-shadow: 0 4px 20px rgba(18, 27, 47, 0.2);
+}
+
+.btn-primary:hover {
+  background: rgba(18, 27, 47, 0.95);
+  box-shadow: 0 6px 30px rgba(18, 27, 47, 0.3);
+  transform: translateY(-2px);
 }
 
 .btn-secondary {
-  @apply border-2 border-teal-400 text-teal-400 hover:bg-teal-400 hover:text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300;
+  @apply border-2 font-semibold py-3 px-6 rounded-lg transition-all duration-300;
+  border-color: #121b2f;
+  color: #121b2f;
+  background: transparent;
+}
+
+.btn-secondary:hover {
+  background: #121b2f;
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(18, 27, 47, 0.2);
 }
 
 /* Loading spinner */
@@ -254,6 +309,32 @@ html {
 /* Card hover effects */
 .card-hover {
   @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+}
+
+/* Staggered reveal animation */
+@keyframes stagger-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-reveal {
+  animation: stagger-reveal 0.6s ease-out forwards;
+}
+
+/* Glow effect for interactive elements */
+.glow-on-hover {
+  transition: all 0.3s ease;
+}
+
+.glow-on-hover:hover {
+  box-shadow: 0 0 20px rgba(18, 27, 47, 0.2),
+              0 0 40px rgba(18, 27, 47, 0.1);
 }
 
 /* Section backgrounds with enhanced backdrop blur for dotted background */
@@ -327,6 +408,13 @@ html {
   .border-adaptive {
     border-color: rgba(255, 255, 255, 0.1);
   }
+}
+
+/* Input placeholder styling */
+input::placeholder,
+textarea::placeholder {
+  color: rgba(18, 27, 47, 0.4);
+  opacity: 1;
 }
 
 /* Print styles */

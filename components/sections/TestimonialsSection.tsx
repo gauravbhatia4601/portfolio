@@ -11,53 +11,36 @@ const TestimonialsSection = () => {
     threshold: 0.1,
   });
 
-  const testimonials = [
+  const testimonials: Array<{
+    name: string;
+    role: string;
+    company: string;
+    image?: string;
+    content: string;
+    rating: number;
+  }> = [
     {
-      name: "Sarah Johnson",
-      role: "Product Manager",
-      company: "TechFlow Solutions",
-      image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Gaurav delivered exceptional work on our e-commerce platform. His attention to detail and ability to solve complex problems made him an invaluable team member. The project was completed ahead of schedule with outstanding quality.",
+      name: "Ali",
+      role: "Founder & CEO",
+      company: "Hatta Sky",
+      // image: "https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg?auto=compress&cs=tinysrgb&w=150",
+      content: "Managing bus ticket sales through manual coordination with agencies was becoming a real headache. We needed a digital solution to streamline online sales, and Gaurav delivered exactly that. The system he built is fast, reliable, and our team finds it incredibly easy to use. Couldn't be happier with how it turned out.",
       rating: 5
     },
     {
-      name: "Michael Chen",
-      role: "CTO",
-      company: "Digital Innovations",
-      image: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Working with Gaurav was a game-changer for our startup. His full-stack expertise and modern development practices helped us build a scalable application that exceeded our expectations. Highly recommended!",
+      name: "Abdul Rehman",
+      role: "Founder & CEO",
+      company: "Hatta Food Hub",
+      // image: "https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg?auto=compress&cs=tinysrgb&w=150",
+      content: "Our existing food delivery platform was constantly bugging out and running slow, which was hurting our business. Instead of starting from scratch, Gaurav worked his magic on optimization. He transformed the same system into something fast and rock-solid. The improvement has been incredible, and our customers noticed the difference immediately.",
       rating: 5
     },
     {
-      name: "Emily Rodriguez",
-      role: "Design Lead",
-      company: "Creative Studio",
-      image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Gaurav has an excellent eye for translating designs into pixel-perfect implementations. His collaboration skills and technical expertise made our design-to-development process seamless and efficient.",
-      rating: 5
-    },
-    {
-      name: "David Thompson",
-      role: "Startup Founder",
-      company: "NextGen Apps",
-      image: "https://images.pexels.com/photos/1043471/pexels-photo-1043471.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Gaurav's ability to understand business requirements and translate them into technical solutions is remarkable. He helped us launch our MVP in record time while maintaining high code quality standards.",
-      rating: 5
-    },
-    {
-      name: "Lisa Wang",
-      role: "Engineering Manager",
-      company: "CloudTech Corp",
-      image: "https://images.pexels.com/photos/1181686/pexels-photo-1181686.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Gaurav's expertise in modern web technologies and his proactive communication style made him a pleasure to work with. He consistently delivered high-quality code and valuable technical insights.",
-      rating: 5
-    },
-    {
-      name: "James Wilson",
-      role: "Project Director",
-      company: "Enterprise Solutions",
-      image: "https://images.pexels.com/photos/1212984/pexels-photo-1212984.jpeg?auto=compress&cs=tinysrgb&w=150",
-      content: "Gaurav demonstrated exceptional problem-solving skills and technical leadership throughout our project. His ability to mentor junior developers while delivering complex features was truly impressive.",
+      name: "Rashid Alkhanjry",
+      role: "Founder & CEO",
+      company: "Alkhanjry Transport",
+      // image: "https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg?auto=compress&cs=tinysrgb&w=150",
+      content: "We'd had enough of our manual ticketing process—it was time-consuming and error-prone. That's when we decided to build something modern from the ground up. Gaurav came through with a brand new ticketing system that's not only fast and reliable, but also intuitive for both our team and customers. It's been a game-changer for our operations.",
       rating: 5
     }
   ];
@@ -67,14 +50,17 @@ const TestimonialsSection = () => {
       <Star
         key={index}
         className={`w-4 h-4 ${
-          index < rating ? 'text-yellow-400 fill-current' : 'text-gray-400'
+          index < rating ? 'fill-current' : ''
         }`}
+        style={{
+          color: index < rating ? '#121b2f' : 'rgba(18, 27, 47, 0.2)',
+        }}
       />
     ));
   };
 
   return (
-    <section id="testimonials" className="py-20 bg-black/10">
+    <section id="testimonials" className="py-20" style={{ backgroundColor: '#fff' }}>
       <div className="container mx-auto px-6">
         <motion.div
           ref={ref}
@@ -83,10 +69,10 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8 }}
           className="max-w-4xl mx-auto text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-teal-400 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
             What Clients Say
           </h2>
-          <p className="text-lg text-gray-300 leading-relaxed">
+          <p className="text-lg leading-relaxed" style={{ color: '#121b2f' }}>
             Don't just take my word for it. Here's what clients and colleagues have to say 
             about working with me.
           </p>
@@ -99,23 +85,45 @@ const TestimonialsSection = () => {
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.8, delay: index * 0.1 }}
-              className="bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300 relative"
-              whileHover={{ scale: 1.02 }}
+              className="rounded-xl p-6 transition-all duration-300 relative border"
+              style={{
+                backgroundColor: '#fafafa',
+                borderColor: 'rgba(18, 27, 47, 0.1)',
+              }}
+              whileHover={{ 
+                scale: 1.02,
+                borderColor: 'rgba(18, 27, 47, 0.3)',
+                boxShadow: '0 4px 20px rgba(18, 27, 47, 0.1)',
+              }}
             >
-              <div className="absolute top-4 right-4 text-teal-400/30">
+              <div className="absolute top-4 right-4" style={{ color: 'rgba(18, 27, 47, 0.2)' }}>
                 <Quote className="w-8 h-8" />
               </div>
               
               <div className="flex items-center mb-4">
-                <img
-                  src={testimonial.image}
-                  alt={testimonial.name}
-                  className="w-12 h-12 rounded-full object-cover mr-4"
-                />
+                {'image' in testimonial && testimonial.image ? (
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-12 h-12 rounded-full object-cover mr-4 border-2"
+                    style={{ borderColor: 'rgba(18, 27, 47, 0.1)' }}
+                  />
+                ) : (
+                  <div
+                    className="w-12 h-12 rounded-full mr-4 border-2 flex items-center justify-center font-semibold"
+                    style={{ 
+                      borderColor: 'rgba(18, 27, 47, 0.1)',
+                      backgroundColor: 'rgba(18, 27, 47, 0.05)',
+                      color: '#121b2f'
+                    }}
+                  >
+                    {testimonial.name.charAt(0)}
+                  </div>
+                )}
                 <div>
-                  <h4 className="text-white font-semibold">{testimonial.name}</h4>
-                  <p className="text-gray-400 text-sm">{testimonial.role}</p>
-                  <p className="text-teal-400 text-sm">{testimonial.company}</p>
+                  <h4 className="font-semibold" style={{ color: '#121b2f' }}>{testimonial.name}</h4>
+                  <p className="text-sm" style={{ color: 'rgba(18, 27, 47, 0.7)' }}>{testimonial.role}</p>
+                  <p className="text-sm" style={{ color: '#121b2f' }}>{testimonial.company}</p>
                 </div>
               </div>
               
@@ -123,7 +131,7 @@ const TestimonialsSection = () => {
                 {renderStars(testimonial.rating)}
               </div>
               
-              <p className="text-gray-300 text-sm leading-relaxed">
+              <p className="text-sm leading-relaxed" style={{ color: '#121b2f' }}>
                 "{testimonial.content}"
               </p>
             </motion.div>
@@ -136,18 +144,24 @@ const TestimonialsSection = () => {
           transition={{ duration: 0.8, delay: 0.8 }}
           className="mt-16 text-center"
         >
-          <div className="bg-gradient-to-r from-emerald-600/20 to-teal-600/20 backdrop-blur-lg rounded-xl p-8 max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-white mb-4">
+          <div 
+            className="rounded-xl p-8 max-w-2xl mx-auto border"
+            style={{
+              backgroundColor: '#fafafa',
+              borderColor: 'rgba(18, 27, 47, 0.2)',
+            }}
+          >
+            <h3 className="text-2xl font-bold mb-4" style={{ color: '#121b2f' }}>
               Ready to Work Together?
             </h3>
-            <p className="text-gray-300 mb-6">
+            <p className="mb-6" style={{ color: '#121b2f' }}>
               Join the list of satisfied clients who have transformed their ideas into 
               successful digital products. Let's discuss your next project.
             </p>
             <motion.a
               href="#contact"
-              className="inline-block bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-8 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg hover:shadow-xl"
-              whileHover={{ scale: 1.05 }}
+              className="inline-block btn-primary px-8 py-3 rounded-full font-semibold"
+              whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
               Start Your Project

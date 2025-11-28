@@ -19,7 +19,7 @@ import ScrollProgress from '@/components/ui/ScrollProgress';
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-slate-900">
+    <div className="relative min-h-screen overflow-x-hidden" style={{ backgroundColor: '#fff' }}>
       <ScrollProgress />
       <ThreeBackground />
       <Navigation />

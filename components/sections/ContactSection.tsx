@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { Mail, Phone, MapPin, Send, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { Mail, MapPin, Send, Github, Linkedin, ExternalLink, ArrowRight, Sparkles } from 'lucide-react';
 
 const ContactSection = () => {
   const [ref, inView] = useInView({
@@ -18,6 +18,8 @@ const ContactSection = () => {
     message: ''
   });
 
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -29,197 +31,341 @@ const ContactSection = () => {
     console.log('Form submitted:', formData);
   };
 
-  const contactInfo = [
+  const contactMethods = [
     {
-      icon: <Mail className="w-6 h-6" />,
+      icon: <Mail className="w-5 h-5" />,
       title: "Email",
-      detail: "gauravbhatia172@gmail.com",
-      href: "mailto:gauravbhatia172@gmail.com"
+      value: "gauravbhatia172@gmail.com",
+      href: "mailto:gauravbhatia172@gmail.com",
+      description: "Drop me a line anytime"
     },
     {
-      icon: <MapPin className="w-6 h-6" />,
+      icon: <MapPin className="w-5 h-5" />,
       title: "Location",
-      detail: "Dubai, UAE",
-      href: "#"
+      value: "Dubai, UAE",
+      href: "#",
+      description: "Available for remote work"
     }
   ];
 
   const socialLinks = [
     {
-      icon: <Github className="w-6 h-6" />,
+      icon: <Github className="w-5 h-5" />,
       name: "GitHub",
-      href: "https://github.com/gauravbhatia4601",
-      color: "hover:text-gray-400"
+      href: "https://github.com/gauravbhatia4601"
     },
     {
-      icon: <Linkedin className="w-6 h-6" />,
+      icon: <Linkedin className="w-5 h-5" />,
       name: "LinkedIn",
-      href: "https://www.linkedin.com/in/gauravbhatia1064",
-      color: "hover:text-blue-400"
+      href: "https://www.linkedin.com/in/gauravbhatia1064"
     },
     {
-      icon: <ExternalLink className="w-6 h-6" />,
+      icon: <ExternalLink className="w-5 h-5" />,
       name: "Upwork",
-      href: "https://www.upwork.com/freelancers/~0120500524197e5864",
-      color: "hover:text-green-400"
+      href: "https://www.upwork.com/freelancers/~0120500524197e5864"
     }
   ];
 
   return (
-    <section id="contact" className="py-20 bg-black/20">
-      <div className="container mx-auto px-6">
+    <section 
+      id="contact" 
+      className="py-24 relative overflow-hidden"
+      style={{ backgroundColor: '#fff' }}
+    >
+      {/* Subtle background pattern */}
+      <div className="absolute inset-0 opacity-30">
+        <div 
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(18, 27, 47, 0.03) 2px, rgba(18, 27, 47, 0.03) 4px),
+              repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(18, 27, 47, 0.03) 2px, rgba(18, 27, 47, 0.03) 4px)
+            `,
+          }}
+        />
+      </div>
+
+      <div className="container mx-auto px-6 relative z-10">
+        {/* Header Section */}
         <motion.div
           ref={ref}
-          initial={{ opacity: 0, y: 50 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto text-center mb-16"
+          className="max-w-3xl mx-auto text-center mb-20"
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-white to-teal-400 bg-clip-text text-transparent">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={inView ? { opacity: 1, scale: 1 } : {}}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="inline-flex items-center gap-2 mb-6"
+          >
+            {/* <Sparkles className="w-5 h-5" style={{ color: '#121b2f' }} /> */}
+            {/* <span className="text-sm font-medium tracking-wider uppercase" style={{ color: '#121b2f' }}>
+              Let's Connect
+            </span> */}
+            {/* <Sparkles className="w-5 h-5" style={{ color: '#121b2f' }} /> */}
+          </motion.div>
+          
+          <h2 className="text-5xl md:text-6xl font-bold mb-6 gradient-text">
             Get In Touch
           </h2>
-          <p className="text-lg text-gray-300 leading-relaxed">
-            Ready to start your next project? Let's discuss how we can work together 
-            to bring your ideas to life.
+          <p className="text-lg leading-relaxed max-w-2xl mx-auto" style={{ color: '#121b2f' }}>
+            Ready to transform your ideas into reality? I'm always excited to collaborate on innovative projects.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Contact Info */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="lg:col-span-1"
-          >
-            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300">
-              <h3 className="text-xl font-semibold text-white mb-6">Contact Information</h3>
-              
-              <div className="space-y-4 mb-8">
-                {contactInfo.map((info, index) => (
-                  <motion.a
-                    key={index}
-                    href={info.href}
-                    className="flex items-center space-x-3 text-gray-300 hover:text-white transition-colors duration-300"
-                    whileHover={{ x: 5 }}
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
+            {/* Left Side - Contact Methods */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="space-y-6"
+            >
+              {contactMethods.map((method, index) => (
+                <motion.a
+                  key={index}
+                  href={method.href}
+                  className="block group"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.6, delay: 0.4 + index * 0.1 }}
+                  whileHover={{ x: 5 }}
+                >
+                  <div 
+                    className="p-6 rounded-2xl border transition-all duration-300"
+                    style={{
+                      backgroundColor: '#fff',
+                      borderColor: 'rgba(18, 27, 47, 0.15)',
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.borderColor = '#121b2f';
+                      e.currentTarget.style.boxShadow = '0 8px 30px rgba(18, 27, 47, 0.1)';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.borderColor = 'rgba(18, 27, 47, 0.15)';
+                      e.currentTarget.style.boxShadow = 'none';
+                    }}
                   >
-                    <div className="text-teal-400">{info.icon}</div>
-                    <div>
-                      <p className="font-medium">{info.title}</p>
-                      <p className="text-sm">{info.detail}</p>
+                    <div className="flex items-start gap-4">
+                      <div 
+                        className="p-3 rounded-xl flex-shrink-0"
+                        style={{
+                          backgroundColor: 'rgba(18, 27, 47, 0.05)',
+                        }}
+                      >
+                        <div style={{ color: '#121b2f' }}>
+                          {method.icon}
+                        </div>
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-semibold text-lg mb-1" style={{ color: '#121b2f' }}>
+                          {method.title}
+                        </h3>
+                        <p className="text-base mb-1" style={{ color: '#121b2f' }}>
+                          {method.value}
+                        </p>
+                        <p className="text-sm" style={{ color: 'rgba(18, 27, 47, 0.6)' }}>
+                          {method.description}
+                        </p>
+                      </div>
+                      <ArrowRight 
+                        className="w-5 h-5 flex-shrink-0 transition-transform duration-300 group-hover:translate-x-1" 
+                        style={{ color: 'rgba(18, 27, 47, 0.4)' }}
+                      />
                     </div>
-                  </motion.a>
-                ))}
-              </div>
+                  </div>
+                </motion.a>
+              ))}
 
-              <div className="border-t border-white/20 pt-6">
-                <h4 className="text-lg font-semibold text-white mb-4">Follow Me</h4>
-                <div className="flex space-x-4">
+              {/* Social Links */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={inView ? { opacity: 1, y: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="pt-6"
+              >
+                <h4 className="text-sm font-medium mb-4 uppercase tracking-wider" style={{ color: 'rgba(18, 27, 47, 0.6)' }}>
+                  Connect With Me
+                </h4>
+                <div className="flex gap-4">
                   {socialLinks.map((link, index) => (
                     <motion.a
                       key={index}
                       href={link.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className={`text-gray-400 ${link.color} transition-colors duration-300`}
-                      whileHover={{ scale: 1.2 }}
+                      className="p-3 rounded-xl border transition-all duration-300"
+                      style={{
+                        backgroundColor: '#fff',
+                        borderColor: 'rgba(18, 27, 47, 0.15)',
+                        color: '#121b2f',
+                      }}
+                      whileHover={{ 
+                        scale: 1.1,
+                        borderColor: '#121b2f',
+                        boxShadow: '0 4px 20px rgba(18, 27, 47, 0.1)',
+                      }}
+                      whileTap={{ scale: 0.95 }}
+                      aria-label={link.name}
                     >
                       {link.icon}
                     </motion.a>
                   ))}
                 </div>
-              </div>
-            </div>
-          </motion.div>
+              </motion.div>
+            </motion.div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={inView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="lg:col-span-2"
-          >
-            <div className="bg-white/10 backdrop-blur-lg rounded-xl p-6 hover:bg-white/20 transition-all duration-300">
-              <h3 className="text-xl font-semibold text-white mb-6">Send a Message</h3>
-              
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-2">
-                      Name
+            {/* Right Side - Contact Form */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={inView ? { opacity: 1, x: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+            >
+              <div 
+                className="p-8 rounded-2xl border"
+                style={{
+                  backgroundColor: '#fff',
+                  borderColor: 'rgba(18, 27, 47, 0.15)',
+                }}
+              >
+                <h3 className="text-2xl font-bold mb-8" style={{ color: '#121b2f' }}>
+                  Send a Message
+                </h3>
+                
+                <form onSubmit={handleSubmit} className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div className="relative">
+                      <label 
+                        htmlFor="name" 
+                        className="block text-sm font-medium mb-2 transition-all duration-300"
+                        style={{ 
+                          color: focusedField === 'name' ? '#121b2f' : 'rgba(18, 27, 47, 0.7)' 
+                        }}
+                      >
+                        Name
+                      </label>
+                      <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value={formData.name}
+                        onChange={handleInputChange}
+                        onFocus={() => setFocusedField('name')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full px-4 py-3 border rounded-xl transition-all duration-300 focus:outline-none"
+                        style={{
+                          backgroundColor: '#fff',
+                          borderColor: focusedField === 'name' ? '#121b2f' : 'rgba(18, 27, 47, 0.2)',
+                          color: '#121b2f',
+                        }}
+                        placeholder="Your name"
+                        required
+                      />
+                    </div>
+                    <div className="relative">
+                      <label 
+                        htmlFor="email" 
+                        className="block text-sm font-medium mb-2 transition-all duration-300"
+                        style={{ 
+                          color: focusedField === 'email' ? '#121b2f' : 'rgba(18, 27, 47, 0.7)' 
+                        }}
+                      >
+                        Email
+                      </label>
+                      <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        onFocus={() => setFocusedField('email')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full px-4 py-3 border rounded-xl transition-all duration-300 focus:outline-none"
+                        style={{
+                          backgroundColor: '#fff',
+                          borderColor: focusedField === 'email' ? '#121b2f' : 'rgba(18, 27, 47, 0.2)',
+                          color: '#121b2f',
+                        }}
+                        placeholder="your.email@example.com"
+                        required
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className="relative">
+                    <label 
+                      htmlFor="subject" 
+                      className="block text-sm font-medium mb-2 transition-all duration-300"
+                      style={{ 
+                        color: focusedField === 'subject' ? '#121b2f' : 'rgba(18, 27, 47, 0.7)' 
+                      }}
+                    >
+                      Subject
                     </label>
                     <input
                       type="text"
-                      id="name"
-                      name="name"
-                      value={formData.name}
+                      id="subject"
+                      name="subject"
+                      value={formData.subject}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all duration-300"
-                      placeholder="Your name"
+                      onFocus={() => setFocusedField('subject')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full px-4 py-3 border rounded-xl transition-all duration-300 focus:outline-none"
+                      style={{
+                        backgroundColor: '#fff',
+                        borderColor: focusedField === 'subject' ? '#121b2f' : 'rgba(18, 27, 47, 0.2)',
+                        color: '#121b2f',
+                      }}
+                      placeholder="What's this about?"
                       required
                     />
                   </div>
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-300 mb-2">
-                      Email
+                  
+                  <div className="relative">
+                    <label 
+                      htmlFor="message" 
+                      className="block text-sm font-medium mb-2 transition-all duration-300"
+                      style={{ 
+                        color: focusedField === 'message' ? '#121b2f' : 'rgba(18, 27, 47, 0.7)' 
+                      }}
+                    >
+                      Message
                     </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      value={formData.email}
+                    <textarea
+                      id="message"
+                      name="message"
+                      value={formData.message}
                       onChange={handleInputChange}
-                      className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all duration-300"
-                      placeholder="your.email@example.com"
+                      onFocus={() => setFocusedField('message')}
+                      onBlur={() => setFocusedField(null)}
+                      rows={6}
+                      className="w-full px-4 py-3 border rounded-xl transition-all duration-300 resize-none focus:outline-none"
+                      style={{
+                        backgroundColor: '#fff',
+                        borderColor: focusedField === 'message' ? '#121b2f' : 'rgba(18, 27, 47, 0.2)',
+                        color: '#121b2f',
+                      }}
+                      placeholder="Tell me about your project, goals, and how we can work together..."
                       required
                     />
                   </div>
-                </div>
-                
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-300 mb-2">
-                    Subject
-                  </label>
-                  <input
-                    type="text"
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleInputChange}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all duration-300"
-                    placeholder="What's this about?"
-                    required
-                  />
-                </div>
-                
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-300 mb-2">
-                    Message
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
-                    rows={5}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-teal-400 focus:ring-2 focus:ring-teal-400/20 transition-all duration-300 resize-none"
-                    placeholder="Tell me about your project..."
-                    required
-                  />
-                </div>
-                
-                <motion.button
-                  type="submit"
-                  className="w-full bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center space-x-2"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Send className="w-5 h-5" />
-                  <span>Send Message</span>
-                </motion.button>
-              </form>
-            </div>
-          </motion.div>
+                  
+                  <motion.button
+                    type="submit"
+                    className="w-full btn-primary px-6 py-4 rounded-xl font-semibold flex items-center justify-center gap-2 text-base"
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <span>Send Message</span>
+                    <Send className="w-5 h-5" />
+                  </motion.button>
+                </form>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

@@ -1,8 +1,18 @@
 import './globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Sora, Outfit } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin'] });
+const sora = Sora({ 
+  subsets: ['latin'],
+  variable: '--font-sora',
+  display: 'swap',
+});
+
+const outfit = Outfit({ 
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Gaurav Bhatia - Backend Developer & AI Automation Architect',
@@ -30,7 +40,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body className={`${inter.className} antialiased`}>
+      <body className={`${sora.variable} ${outfit.variable} font-sans antialiased`}>
         {children}
       </body>
     </html>
